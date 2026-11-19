@@ -41,14 +41,8 @@
     return out;
   }
   const isDirectLead = (viewer, emp) => !!(person(emp) && person(emp).leadId === viewer);
-  function isAbove(viewer, emp) {
-    let p = person(emp);
-    const seen = new Set();
-    while (p && p.leadId && !seen.has(p.id)) { seen.add(p.id); if (p.leadId === viewer) return true; p = person(p.leadId); }
-    return false;
-  }
-  // Read-only access to someone else's reviews: anyone above them in the tree, or Ops
-  const canOversee = (viewer, emp) => viewer !== emp && (isAbove(viewer, emp) || isOps(viewer));
+  // Read-only access to someone else's reviews: Ops only. Everyone else sees just their own and their direct reports'.
+  const canOversee = (viewer, emp) => viewer !== emp && isOps(viewer);
   const seniorityText = (p) => (p.seniority ? ' · ' + p.seniority : '');
   const sectionsFor = (p) => FW.companySections.concat(p.role ? FW.roles[p.role].sections : []);
   const openCycle = () => state.cycles.find((c) => c.status === 'open');
@@ -126,8 +120,8 @@
   //  - the person writing it (self-review: you; team lead review: your direct team lead)
   //  - you, for your own team lead review, once your review discussion has been held
   //  - your direct team lead, for your self-review, once they've submitted theirs (so they're not anchored by it)
-  //  - anyone above you in the tree, and Ops, read-only, once a review is submitted
-  //  Nobody else. Colleagues at the same level, or in other teams, see nothing.
+  //  - Ops, read-only, once a review is submitted
+  //  Nobody else. Not your team lead's team lead, not colleagues at the same level or in other teams.
   function canView(r) {
     const v = state.viewAs;
     const e = r.employeeId;
@@ -150,7 +144,6 @@
   function accessReason(e) {
     const v = state.viewAs;
     if (e === v || isDirectLead(v, e)) return '';
-    if (isAbove(v, e)) return `${esc(person(e).name)} is in your wider team (reports to ${esc(person(person(e).leadId).name)}). You can read submitted reviews; only their team lead writes them and holds the review discussion.`;
     if (isOps(v)) return 'You can see this because you have Ops access. You can read submitted reviews; only the team lead writes them and holds the review discussion.';
     return '';
   }
@@ -321,7 +314,7 @@
     return items.length ? `<ul class="plain">${items.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : '<span class="muted">—</span>';
   };
 
-  // Rows for people you only read (wider team, or everyone for Ops)
+  // Rows for people you only read (everyone, for Ops)
   function readOnlyRow(rp, c) {
     const tl = person(rp.leadId);
     const who = `<td><b>${esc(rp.name)}</b><div class="muted small">${esc(rp.title)}${esc(seniorityText(rp))}</div></td><td class="small">${esc(tl ? tl.name : '—')}</td>`;
@@ -356,7 +349,6 @@
     const v = me();
     const c = openCycle();
     const reps = reportsOf(v.id);
-    const wider = below(v.id).filter((p) => p.leadId !== v.id);
     const rows = reps.map((rp) => {
       const who = `<td><b>${esc(rp.name)}</b><div class="muted small">${esc(rp.title)}${esc(seniorityText(rp))}</div></td>`;
       if (!hasScorecard(rp)) return `<tr>${who}<td colspan="5" class="muted small">No scorecard for this role yet</td></tr>`;
@@ -383,14 +375,8 @@
         </div></td>
       </tr>`;
     }).join('');
-    const widerCard = wider.length ? `
-      <div class="card" style="padding:6px 10px">
-        <div style="padding:14px 10px 4px"><h2 style="margin:0">Wider team</h2>
-          <p class="muted small" style="margin:4px 0 0">People who report to your direct reports. You can read their reviews once they're submitted; their own team lead writes them and holds the discussion.</p></div>
-        <table>${readOnlyHead}${wider.map((rp) => readOnlyRow(rp, c)).join('')}</table>
-      </div>` : '';
     return `
-      <div class="page-head"><h1>My team</h1><div class="muted">${esc(c.name)} review cycle · ${reps.length} direct report${reps.length === 1 ? '' : 's'}${wider.length ? ` · ${wider.length} more in your wider team` : ''}</div></div>
+      <div class="page-head"><h1>My team</h1><div class="muted">${esc(c.name)} review cycle · ${reps.length} direct report${reps.length === 1 ? '' : 's'}</div></div>
       <div class="notice">How it works: each person fills in their self-review while you fill in your team lead review. Both are due on the same day. Once you've both submitted, open <b>Side by side</b> to see where you disagree and use it as the agenda for your review discussion. Afterwards, log the discussion with the meeting transcript so you can both look back at it.</div>
       <div class="card" style="padding:6px 10px">
         <div style="padding:14px 10px 4px"><h2 style="margin:0">Direct reports</h2></div>
@@ -399,7 +385,6 @@
           ${rows || '<tr><td colspan="6" class="empty-state">No one reports to you.</td></tr>'}
         </table>
       </div>
-      ${widerCard}
       ${openRolesCard(openRolesUnder([v.id, ...below(v.id).map((p) => p.id)]))}
       <div class="card"><h2>${esc(c.name)} timeline</h2>${timeline(c, -1)}</div>`;
   }

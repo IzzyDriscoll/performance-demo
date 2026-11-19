@@ -9,7 +9,7 @@ Double-click `index.html`. It opens in your web browser. No internet or installa
 
 You see the app as the person you signed in as (shown at the top right). To see it as someone else, **Sign out** and sign in as them. The made-up team mirrors the shape of the real Neutreeno org chart (November 2026). Good ones to try:
 - **Maya Okafor** (Ops & Finance Lead): her own review, her team, and **All reviews** (Ops access).
-- **Daniel Reyes** (CEO): direct reports plus the whole wider team, read-only.
+- **Daniel Reyes** (CEO): his direct reports only. He can't see reviews further down the tree.
 - **Leo Marchetti** (Head of Software): see Theo's side-by-side and the logged review discussion.
 - **Theo Becker** (team member): his results after the review discussion, with the meeting transcript.
 - **Ryan Patel** (BDR): a role with no scorecard yet.
@@ -37,9 +37,8 @@ Changes are saved in your browser only. **Reset demo data** (top banner) puts ev
 ## Who can see what
 - **Everyone** sees their own self-review, and their team lead's review of them after the review discussion, along with the notes and transcript.
 - **Direct team lead** writes the team lead review, sees the self-review once they've submitted their own, and logs the review discussion.
-- **Anyone higher up the tree** can read submitted reviews for everyone below them, but can't write them or log discussions.
 - **Ops access** (Ops & Finance Lead and Ops Specialist) can read every submitted review, to run the cycle.
-- Nobody else. Colleagues at the same level, or in other teams, see nothing.
+- Nobody else. Not your team lead's team lead, and not colleagues at the same level or in other teams.
 
 ## Grading rules
 - Each line is rated Poor → Basic → Intermediate → Advanced → Exceptional.

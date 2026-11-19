@@ -12,14 +12,22 @@
   <script src="gate.js"></script>
 </head>
 <body>
-  <div class="signin" id="signin">
-    <div class="signin-brand">
-      <img src="assets/logo-wordmark-white.jpg" alt="Neutreeno">
-      <div class="signin-product">Performance</div>
-    </div>
+  <div class="signin" id="signin" data-theme="dark">
+    <section class="signin-intro">
+      <img class="signin-logo" src="assets/logo-wordmark.svg" alt="Neutreeno">
+      <span class="signin-eyebrow">Performance</span>
+      <h1>Make every review count</h1>
+      <p class="signin-lede">You don't need to remember six months of work on the day. Your scorecard, goals and 1:1 notes sit in one place, so every review discussion starts from the same facts.</p>
+      <ol class="signin-points">
+        <li><span>01.</span>Rate yourself against a clear, shared scorecard</li>
+        <li><span>02.</span>See your team lead's view side by side</li>
+        <li><span>03.</span>Agree goals and track them between reviews</li>
+      </ol>
+    </section>
     <form class="signin-card" id="signin-form" novalidate>
-      <h1>Sign in</h1>
-      <p class="signin-sub">Prototype with made-up people only.</p>
+      <h2>Sign in</h2>
+      <p class="signin-sub">Pick who you are, then enter the demo password.</p>
+      <div class="signin-rule"></div>
       <div class="field">
         <label for="signin-person">Who are you?</label>
         <select id="signin-person"></select>
@@ -29,7 +37,11 @@
         <input id="signin-password" type="password" autocomplete="current-password" required>
       </div>
       <p class="signin-error" id="signin-error" role="alert"></p>
-      <button class="btn primary" type="submit">Sign in</button>
+      <button class="btn primary" type="submit">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="m10 17 5-5-5-5"/><path d="M15 12H3"/></svg>
+        Sign in
+      </button>
+      <p class="signin-foot">Prototype with made-up people only.</p>
     </form>
   </div>
   <div class="demo-banner">

@@ -273,22 +273,60 @@ ul.plain { margin: 0; padding-left: 18px; color: var(--body); }
   .form-grid { grid-template-columns: 1fr 1fr; }
 }
 
-/* Sign-in screen (gate.js decides whether it shows) */
+/* Sign-in screen (gate.js decides whether it shows).
+   Follows the design system's marketing surface: flat navy, one blue glow, display type
+   at weight 400, the 01/02/03 list, and a graphite-wash card. Always dark, in both themes. */
 .signin { display: none; }
-html.signed-out .signin { display: grid; grid-template-columns: minmax(280px, 40%) 1fr; min-height: 100vh; }
+html.signed-out .signin {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 400px); gap: 64px; align-items: center;
+  min-height: 100vh; box-sizing: border-box; padding: 56px max(40px, calc((100vw - 1160px) / 2));
+  position: relative; overflow: hidden; color: var(--text);
+  background: radial-gradient(120% 80% at 50% 0%, #141824 0%, #0B0D18 60%);
+}
 html.signed-out .demo-banner, html.signed-out .layout { display: none; }
-.signin-brand { background: var(--ink-950); color: #fff; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
-.signin-brand img { width: 200px; height: auto; display: block; mix-blend-mode: screen; }
-.signin-product { color: var(--ink-300); font-size: 16px; margin-top: 8px; }
-.signin-card { align-self: center; justify-self: center; width: 100%; max-width: 380px; padding: 40px 24px; }
-.signin-card h1 { margin-bottom: 4px; }
-.signin-sub { margin: 0 0 24px; }
-.signin-card select, .signin-card input { width: 100%; padding: 9px 12px; }
-.signin-card .btn { width: 100%; padding: 10px 16px; margin-top: 4px; }
+/* The glow: a soft blue bloom behind the headline, low opacity, never animated */
+.signin::before {
+  content: ""; position: absolute; pointer-events: none;
+  width: 900px; height: 600px; left: -240px; top: -260px;
+  background: radial-gradient(closest-side, rgba(17, 122, 229, .22), rgba(17, 122, 229, 0));
+}
+.signin > * { position: relative; }
+.signin-intro { max-width: 560px; }
+.signin-logo { width: 156px; height: auto; display: block; }
+.signin-eyebrow { display: block; margin: 56px 0 16px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--blue-400); }
+.signin-intro h1 { font-size: 52px; line-height: 1.06; letter-spacing: -0.02em; font-weight: 400; color: #F3F3F6; margin: 0; text-wrap: balance; }
+.signin-lede { margin: 24px 0 0; font-size: 16px; line-height: 1.6; color: #B4B4BE; max-width: 480px; }
+.signin-points { list-style: none; margin: 40px 0 0; padding: 0; display: grid; gap: 16px; }
+.signin-points li { display: grid; grid-template-columns: 40px 1fr; gap: 8px; color: #F3F3F6; font-size: 15px; line-height: 1.5; }
+.signin-points li span { color: var(--blue-400); }
+.signin-card {
+  overflow: hidden; padding: 36px 32px 32px;
+  background: linear-gradient(150deg, #2D2F38 0%, #191B24 34%, #0F111C 72%);
+  border: 1px solid #1E202A; border-radius: 20px;
+}
+.signin-card::before {
+  content: ""; position: absolute; pointer-events: none; width: 340px; height: 240px; right: -120px; top: -120px;
+  background: radial-gradient(closest-side, rgba(17, 122, 229, .28), rgba(17, 122, 229, 0));
+}
+.signin-card > * { position: relative; }
+.signin-card h2 { font-size: 26px; line-height: 1.2; color: #F3F3F6; margin: 0 0 4px; }
+.signin-sub { margin: 0; color: #8A8A95; font-size: 13px; }
+.signin-rule { height: 1px; background: rgba(255, 255, 255, .10); margin: 24px 0; }
+.signin-card .field > label { color: #B4B4BE; }
+.signin-card select, .signin-card input { width: 100%; padding: 10px 12px; box-sizing: border-box; }
+.signin-card .btn { width: 100%; padding: 11px 16px; margin-top: 4px; display: inline-flex; justify-content: center; align-items: center; gap: 8px; }
+.signin-card .btn .icon { width: 16px; height: 16px; }
 .signin-error { color: var(--red-text); font-size: 13px; margin: 0 0 8px; min-height: 1.5em; }
+.signin-foot { margin: 20px 0 0; font-size: 13px; color: #8A8A95; }
 .demo-banner .signout { margin-left: auto; }
-@media (max-width: 700px) {
-  html.signed-out .signin { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
-  .signin-brand { padding: 24px; }
-  .signin-brand img { width: 140px; }
+/* Marketing scroll reveal: fade + 8px rise, 700ms, standard easing. Off for reduced motion. */
+@keyframes signin-reveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+html.signed-out .signin-intro { animation: signin-reveal 700ms cubic-bezier(.22, .61, .36, 1) both; }
+html.signed-out .signin-card { animation: signin-reveal 700ms cubic-bezier(.22, .61, .36, 1) 120ms both; }
+@media (prefers-reduced-motion: reduce) { html.signed-out .signin-intro, html.signed-out .signin-card { animation: none; } }
+@media (max-width: 900px) {
+  html.signed-out .signin { grid-template-columns: 1fr; gap: 40px; padding: 32px 20px 48px; align-items: start; }
+  .signin-eyebrow { margin-top: 40px; }
+  .signin-intro h1 { font-size: 40px; }
+  .signin-card { padding: 28px 22px 24px; }
 }

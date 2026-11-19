@@ -207,10 +207,9 @@
     framework: icon('<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>'),
   };
   function renderTopbar() {
-    const sel = $('#viewas');
-    const opt = (p) => `<option value="${p.id}" ${p.id === state.viewAs ? 'selected' : ''}>${esc(p.name)} — ${esc(p.title)}</option>`;
-    const teams = [...new Set(state.people.map((p) => p.team || 'Team'))];
-    sel.innerHTML = teams.map((t) => `<optgroup label="${esc(t)}">${state.people.filter((p) => (p.team || 'Team') === t).map(opt).join('')}</optgroup>`).join('');
+    // Who you are is fixed at sign-in. To be someone else, sign out and sign in again.
+    const p = me();
+    $('#viewas-name').textContent = p ? `${p.name} — ${p.title}` : '';
     $('#viewas-role').textContent = (isLead(state.viewAs) ? 'Team lead' : 'Team member') + (isOps(state.viewAs) ? ' · Ops access' : '');
     $('#viewas-role').className = 'chip ' + (isLead(state.viewAs) ? 'navy' : 'blue');
   }
@@ -995,8 +994,10 @@ ${L}: I will get you a decision by the end of next week.`;
       showSignIn();
     } else if (a === 'reset-demo') {
       if (!confirm('Reset all demo data back to the start? Any changes you made will be lost.')) return;
+      const signedInAs = state.viewAs;
       localStorage.removeItem(STORE);
       state = loadState();
+      if (person(signedInAs)) { state.viewAs = signedInAs; save(); }
       ui.meetingDraft = null;
       location.hash = '#/';
       render();
@@ -1039,10 +1040,6 @@ ${L}: I will get you a decision by the end of next week.`;
   document.addEventListener('input', onInput);
   document.addEventListener('change', (ev) => {
     const el = ev.target;
-    if (el.id === 'viewas') {
-      state.viewAs = el.value; ui.goalFilter = null; ui.meetingDraft = null; save();
-      location.hash = '#/'; render(); return;
-    }
     if (el.dataset.action === 'fw-role') { ui.fwRole = el.value; render(); return; }
     if (el.dataset.bind === 'goal-current') onInput(ev);
     if (el.dataset.bind === 'meeting' && el.tagName === 'SELECT') onInput(ev);

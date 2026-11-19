@@ -7,7 +7,7 @@ Double-click `index.html`. It opens in your web browser. No internet or installa
 
 **Sign in:** pick who you are and enter the shared demo password. You stay signed in on that browser until you click **Sign out** (top banner). The password only keeps casual visitors out; it isn't real security, because the site has no server and its files are public on GitHub. The online version is at https://izzydriscoll.github.io/performance-demo/ (opening `index.html` straight from the folder may not be able to check the password in every browser).
 
-Use **Viewing as** at the top right to switch between people. The made-up team mirrors the shape of the real Neutreeno org chart (November 2026). Good ones to try:
+You see the app as the person you signed in as (shown at the top right). To see it as someone else, **Sign out** and sign in as them. The made-up team mirrors the shape of the real Neutreeno org chart (November 2026). Good ones to try:
 - **Maya Okafor** (Ops & Finance Lead): her own review, her team, and **All reviews** (Ops access).
 - **Daniel Reyes** (CEO): direct reports plus the whole wider team, read-only.
 - **Leo Marchetti** (Head of Software): see Theo's side-by-side and the logged review discussion.

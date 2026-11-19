@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Neutreeno Performance</title>
+  <link rel="icon" href="assets/logo-mark.jpg">
+  <!-- Switzer: the design system's stand-in for the brand typeface. Falls back to system fonts when offline. -->
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <script src="theme.js"></script>
+</head>
+<body>
+  <div class="demo-banner">
+    Prototype · made-up people only · changes are saved in this browser only
+    <button class="link" data-action="reset-demo">Reset demo data</button>
+  </div>
+  <div class="layout">
+    <aside class="rail">
+      <a class="rail-logo" href="#/" aria-label="Neutreeno performance home">
+        <img src="assets/logo-wordmark-white.jpg" alt="Neutreeno">
+      </a>
+      <div class="rail-product">Performance</div>
+      <nav class="sidenav" id="sidenav"></nav>
+    </aside>
+    <div class="page">
+      <header class="topbar">
+        <div class="theme-switch" role="group" aria-label="Colour theme">
+          <button type="button" data-theme-choice="light" aria-pressed="true">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+            <span>Light</span>
+          </button>
+          <button type="button" data-theme-choice="dark" aria-pressed="false">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>
+            <span>Dark</span>
+          </button>
+        </div>
+        <div class="viewas">
+          <label for="viewas">Viewing as</label>
+          <select id="viewas"></select>
+          <span id="viewas-role" class="chip"></span>
+        </div>
+      </header>
+      <main id="main"></main>
+    </div>
+  </div>
+  <div id="toast" class="toast"></div>
+
+  <script src="data/framework.js"></script>
+  <script src="data/demo-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

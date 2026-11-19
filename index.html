@@ -9,11 +9,33 @@
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&display=swap">
   <link rel="stylesheet" href="styles.css">
   <script src="theme.js"></script>
+  <script src="gate.js"></script>
 </head>
 <body>
+  <div class="signin" id="signin">
+    <div class="signin-brand">
+      <img src="assets/logo-wordmark-white.jpg" alt="Neutreeno">
+      <div class="signin-product">Performance</div>
+    </div>
+    <form class="signin-card" id="signin-form" novalidate>
+      <h1>Sign in</h1>
+      <p class="signin-sub">Prototype with made-up people only.</p>
+      <div class="field">
+        <label for="signin-person">Who are you?</label>
+        <select id="signin-person"></select>
+      </div>
+      <div class="field">
+        <label for="signin-password">Demo password</label>
+        <input id="signin-password" type="password" autocomplete="current-password" required>
+      </div>
+      <p class="signin-error" id="signin-error" role="alert"></p>
+      <button class="btn primary" type="submit">Sign in</button>
+    </form>
+  </div>
   <div class="demo-banner">
     Prototype · made-up people only · changes are saved in this browser only
     <button class="link" data-action="reset-demo">Reset demo data</button>
+    <button class="link signout" data-action="sign-out">Sign out</button>
   </div>
   <div class="layout">
     <aside class="rail">

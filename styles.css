@@ -272,3 +272,23 @@ ul.plain { margin: 0; padding-left: 18px; color: var(--body); }
   .summary { position: static; }
   .form-grid { grid-template-columns: 1fr 1fr; }
 }
+
+/* Sign-in screen (gate.js decides whether it shows) */
+.signin { display: none; }
+html.signed-out .signin { display: grid; grid-template-columns: minmax(280px, 40%) 1fr; min-height: 100vh; }
+html.signed-out .demo-banner, html.signed-out .layout { display: none; }
+.signin-brand { background: var(--ink-950); color: #fff; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+.signin-brand img { width: 200px; height: auto; display: block; mix-blend-mode: screen; }
+.signin-product { color: var(--ink-300); font-size: 16px; margin-top: 8px; }
+.signin-card { align-self: center; justify-self: center; width: 100%; max-width: 380px; padding: 40px 24px; }
+.signin-card h1 { margin-bottom: 4px; }
+.signin-sub { margin: 0 0 24px; }
+.signin-card select, .signin-card input { width: 100%; padding: 9px 12px; }
+.signin-card .btn { width: 100%; padding: 10px 16px; margin-top: 4px; }
+.signin-error { color: var(--red-text); font-size: 13px; margin: 0 0 8px; min-height: 1.5em; }
+.demo-banner .signout { margin-left: auto; }
+@media (max-width: 700px) {
+  html.signed-out .signin { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+  .signin-brand { padding: 24px; }
+  .signin-brand img { width: 140px; }
+}

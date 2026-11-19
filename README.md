@@ -5,6 +5,8 @@ A clickable prototype of the Neutreeno performance review app. It uses **made-up
 ## How to open it
 Double-click `index.html`. It opens in your web browser. No internet or installation needed.
 
+**Sign in:** pick who you are and enter the shared demo password. You stay signed in on that browser until you click **Sign out** (top banner). The password only keeps casual visitors out; it isn't real security, because the site has no server and its files are public on GitHub. The online version is at https://izzydriscoll.github.io/performance-demo/ (opening `index.html` straight from the folder may not be able to check the password in every browser).
+
 Use **Viewing as** at the top right to switch between people. The made-up team mirrors the shape of the real Neutreeno org chart (November 2026). Good ones to try:
 - **Maya Okafor** (Ops & Finance Lead): her own review, her team, and **All reviews** (Ops access).
 - **Daniel Reyes** (CEO): direct reports plus the whole wider team, read-only.
@@ -23,6 +25,7 @@ Changes are saved in your browser only. **Reset demo data** (top banner) puts ev
 | `app.js` | How the app behaves (screens, grading, buttons) |
 | `styles.css` | How it looks: colours, fonts and shapes from the *Neutreeno Design System* |
 | `theme.js` | The light / dark mode switch |
+| `gate.js` | The sign-in screen's shared password (stored scrambled, never in plain text) |
 | `assets/` | Neutreeno logos (white wordmark in the menu, dot mark as the browser-tab icon) |
 | `data/framework.js` | Scorecard wording and talent bar, taken from *Neutreeno Performance Review Scorecard.xlsx* and *Talent Bar v8* |
 | `data/demo-data.js` | The made-up people, reviews, goals and 1:1s |

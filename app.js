@@ -988,6 +988,11 @@ ${L}: I will get you a decision by the end of next week.`;
       if (!confirm('Delete these 1:1 notes?')) return;
       state.oneOnOnes = state.oneOnOnes.filter((m) => m.id !== el.dataset.id); save();
       location.hash = '#/one-on-ones';
+    } else if (a === 'sign-out') {
+      try { localStorage.removeItem(window.DEMO_GATE.key); } catch (e) {}
+      ui.meetingDraft = null;
+      location.hash = '#/';
+      showSignIn();
     } else if (a === 'reset-demo') {
       if (!confirm('Reset all demo data back to the start? Any changes you made will be lost.')) return;
       localStorage.removeItem(STORE);
@@ -1043,5 +1048,40 @@ ${L}: I will get you a decision by the end of next week.`;
     if (el.dataset.bind === 'meeting' && el.tagName === 'SELECT') onInput(ev);
   });
   window.addEventListener('hashchange', render);
+
+  // ---------------------------------------------------------------- sign-in (see gate.js)
+  function showSignIn() {
+    const sel = $('#signin-person');
+    const teams = [...new Set(state.people.map((p) => p.team || 'Team'))];
+    sel.innerHTML = teams.map((t) => `<optgroup label="${esc(t)}">${state.people.filter((p) => (p.team || 'Team') === t)
+      .map((p) => `<option value="${p.id}" ${p.id === state.viewAs ? 'selected' : ''}>${esc(p.name)} — ${esc(p.title)}</option>`).join('')}</optgroup>`).join('');
+    $('#signin-password').value = '';
+    $('#signin-error').textContent = '';
+    document.documentElement.classList.add('signed-out');
+    $('#signin-password').focus();
+  }
+  async function sha256(text) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, '0')).join('');
+  }
+  $('#signin-form').addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const gate = window.DEMO_GATE;
+    const pw = $('#signin-password').value;
+    if (!pw) { $('#signin-error').textContent = 'Enter the demo password.'; return; }
+    if (!window.crypto || !crypto.subtle) { $('#signin-error').textContent = 'This browser can\'t check the password here. Try the hosted link.'; return; }
+    if ((await sha256(gate.salt + pw)) !== gate.hash) {
+      $('#signin-error').textContent = 'That password isn\'t right.';
+      $('#signin-password').select();
+      return;
+    }
+    try { localStorage.setItem(gate.key, gate.hash); } catch (e) {}
+    state.viewAs = $('#signin-person').value; ui.goalFilter = null; ui.meetingDraft = null; save();
+    document.documentElement.classList.remove('signed-out');
+    location.hash = '#/';
+    render();
+  });
+
+  if (document.documentElement.classList.contains('signed-out')) showSignIn();
   render();
 })();

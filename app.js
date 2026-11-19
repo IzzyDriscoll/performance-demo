@@ -60,7 +60,7 @@
       r = {
         id: reviewKey(c, e, t), cycleId: c, employeeId: e, type: t,
         reviewerId: t === 'self' ? e : p.leadId,
-        answers: {}, comments: {}, strengths: ['', '', ''], improvements: ['', '', ''], kpis: [],
+        answers: {}, comments: {}, strengths: ['', '', ''], improvements: ['', '', ''],
         status: 'not_started', submittedAt: null,
       };
       state.reviews.push(r);
@@ -471,8 +471,7 @@
           <div><h3>Strengths</h3>${[0, 1, 2].map((i) => `<div class="field"><input type="text" placeholder="${i + 1}." value="${esc(r.strengths[i])}" data-bind="strength" data-review="${r.id}" data-i="${i}" ${editable ? '' : 'disabled'}></div>`).join('')}</div>
           <div><h3>Improvement areas</h3>${[0, 1, 2].map((i) => `<div class="field"><input type="text" placeholder="${i + 1}." value="${esc(r.improvements[i])}" data-bind="improvement" data-review="${r.id}" data-i="${i}" ${editable ? '' : 'disabled'}></div>`).join('')}</div>
         </div>
-      </div>
-      ${r.type === 'lead' ? kpiCard(r, editable) : ''}`;
+      </div>`;
 
     const summary = `
       <div class="card summary">
@@ -525,20 +524,6 @@
       <div class="trait-head"><span class="trait-name">${single ? '<span class="muted">Rating</span>' : esc(t.name)}</span><div class="pills">${pills}</div></div>
       ${desc}
       <details><summary>See all levels</summary><ul class="levels-list">${t.levels.map((txt, i) => `<li>${lvlChip(i)}<span>${esc(txt)}</span></li>`).join('')}</ul></details>
-    </div>`;
-  }
-
-  function kpiCard(r, editable) {
-    const rows = r.kpis.map((k, i) => `<tr>
-      <td><input type="text" value="${esc(k.text)}" placeholder="KPI" data-bind="kpi" data-field="text" data-review="${r.id}" data-i="${i}" ${editable ? '' : 'disabled'}></td>
-      <td style="width:130px"><select data-bind="kpi" data-field="achieved" data-review="${r.id}" data-i="${i}" ${editable ? '' : 'disabled'}>
-        ${['', 'Yes', 'Partly', 'No'].map((o) => `<option ${k.achieved === o ? 'selected' : ''} value="${o}">${o || 'Achieved?'}</option>`).join('')}</select></td>
-      <td><input type="text" value="${esc(k.link)}" placeholder="Link (optional)" data-bind="kpi" data-field="link" data-review="${r.id}" data-i="${i}" ${editable ? '' : 'disabled'}></td>
-      <td style="width:40px">${editable ? `<button class="link" data-action="remove-kpi" data-review="${r.id}" data-i="${i}">Remove</button>` : ''}</td>
-    </tr>`).join('');
-    return `<div class="card"><h3>KPIs</h3>
-      <table><tr><th>KPI</th><th>Achieved?</th><th>Link</th><th></th></tr>${rows || '<tr><td colspan="4" class="muted">No KPIs added.</td></tr>'}</table>
-      ${editable ? `<div style="margin-top:10px"><button class="btn small" data-action="add-kpi" data-review="${r.id}">+ Add KPI</button></div>` : ''}
     </div>`;
   }
 
@@ -609,8 +594,7 @@
       <div class="card"><div class="side-by-side">
         <div class="col"><h4>Strengths — ${esc(selfLabel)}</h4>${listHtml(self.strengths)}<h4 style="margin-top:14px">Improvement areas — ${esc(selfLabel)}</h4>${listHtml(self.improvements)}</div>
         <div class="col"><h4>Strengths — ${esc(firstName(tl))}</h4>${listHtml(lead.strengths)}<h4 style="margin-top:14px">Improvement areas — ${esc(firstName(tl))}</h4>${listHtml(lead.improvements)}</div>
-      </div></div>
-      ${lead.kpis.length ? `<div class="card"><h3>KPIs</h3><table><tr><th>KPI</th><th>Achieved?</th></tr>${lead.kpis.map((k) => `<tr><td>${esc(k.text)}</td><td>${k.achieved ? `<span class="chip ${k.achieved === 'Yes' ? 'green' : k.achieved === 'No' ? 'red' : 'amber'}">${esc(k.achieved)}</span>` : '—'}</td></tr>`).join('')}</table></div>` : ''}`;
+      </div></div>`;
 
     const discussion = viewerIsLead
       ? `<div class="card"><div class="spread"><h3 style="margin:0">Review discussion</h3>${o.discussed ? `<span class="chip green">Held${o.date ? ' on ' + fmtDate(o.date) : ''}</span>` : `<span class="chip">Due ${fmtDate(cyc.stages[cyc.stages.length - 1].due)}</span>`}</div>
@@ -916,10 +900,6 @@ ${L}: I will get you a decision by the end of next week.`;
       if (r.type === 'lead' && isSubmitted(getReview(r.cycleId, r.employeeId, 'self'))) location.hash = `#/compare/${r.cycleId}/${r.employeeId}`;
       else if (r.type === 'lead') location.hash = '#/team';
       else location.hash = '#/';
-    } else if (a === 'add-kpi' && r && canEdit(r)) {
-      r.kpis.push({ text: '', achieved: '', link: '' }); save(); render();
-    } else if (a === 'remove-kpi' && r && canEdit(r)) {
-      r.kpis.splice(Number(el.dataset.i), 1); save(); render();
     } else if (a === 'toggle-diffs') {
       ui.onlyDiffs = el.checked; render();
     } else if (a === 'hold-discussion' && canLogDiscussion(el.dataset.c, el.dataset.e)) {
@@ -1018,7 +998,6 @@ ${L}: I will get you a decision by the end of next week.`;
     if (b === 'comment') r.comments[el.dataset.key] = el.value;
     else if (b === 'strength') r.strengths[i] = el.value;
     else if (b === 'improvement') r.improvements[i] = el.value;
-    else if (b === 'kpi') r.kpis[i][el.dataset.field] = el.value;
     if (r.status === 'not_started') r.status = 'draft';
     save();
   }

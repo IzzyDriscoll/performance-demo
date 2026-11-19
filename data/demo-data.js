@@ -121,7 +121,7 @@ window.buildDemoState = function (FW) {
       id: cycleId + ':' + empId + ':' + type,
       cycleId, employeeId: empId, type,
       reviewerId: type === 'self' ? empId : p.leadId,
-      answers: ans || {}, comments: {}, strengths: ['', '', ''], improvements: ['', '', ''], kpis: [],
+      answers: ans || {}, comments: {}, strengths: ['', '', ''], improvements: ['', '', ''],
       status, submittedAt: status === 'submitted' ? (cycleId === '2027-02' ? '2027-02-05' : '2026-08-10') : null,
       ...(extra || {}),
     });
@@ -167,11 +167,6 @@ window.buildDemoState = function (FW) {
     },
     strengths: ['Office move delivered on time and on budget', 'Very well liked by the team', 'Fast to pick up new tools'],
     improvements: ['Financial modelling and scenarios', 'Writing processes down', 'Speaking up earlier when blocked'],
-    kpis: [
-      { text: 'Monthly finance pack sent by the 5th', achieved: 'Yes', link: '' },
-      { text: 'Supplier costs down 10%', achieved: 'Partly', link: '' },
-      { text: 'Onboarding checklist live for all new joiners', achieved: 'No', link: '' },
-    ],
   });
 
   // Aisha: self submitted, team lead review in progress
@@ -187,7 +182,6 @@ window.buildDemoState = function (FW) {
   addReview('2027-02', 'theo', 'lead', leadView(P('theo'), theoSelf, 'theo-lead', { Skills: 0.15 }), 'submitted', {
     strengths: ['Designed the new data pipeline', 'Great mentor to Nina', 'Calm during incidents'],
     improvements: ['Write more tests before shipping', 'Share design docs earlier', ''],
-    kpis: [{ text: 'Platform uptime above 99.5%', achieved: 'Yes', link: '' }, { text: 'Ship carbon report export', achieved: 'Yes', link: '' }],
   });
   outcomes['2027-02:theo'] = {
     discussed: true, date: '2027-02-11',
